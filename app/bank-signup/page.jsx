@@ -84,12 +84,12 @@ export default function BankEmployeeSignup() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-green-50 to-white flex flex-col">
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
             {/* Navigation */}
             <nav className="bg-white shadow-sm py-4">
                 <div className="container mx-auto px-6">
                     <Link href="/" className="flex items-center">
-                        <Leaf className="h-8 w-8 text-green-600" />
+                        <Leaf className="h-8 w-8 text-blue-600" />
                         <span className="ml-2 text-2xl font-bold text-gray-800">Agrogami</span>
                     </Link>
                 </div>
@@ -129,7 +129,7 @@ export default function BankEmployeeSignup() {
                                         value={formData.fullName}
                                         onChange={handleChange}
                                         required
-                                        className="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
+                                        className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
                                         placeholder="Enter your full name"
                                     />
                                 </div>
@@ -151,7 +151,7 @@ export default function BankEmployeeSignup() {
                                         value={formData.employeeId}
                                         onChange={handleChange}
                                         required
-                                        className="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
+                                        className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
                                         placeholder="Enter your employee ID"
                                     />
                                 </div>
@@ -173,7 +173,7 @@ export default function BankEmployeeSignup() {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
+                                        className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
                                         placeholder="Enter your email address"
                                     />
                                 </div>
@@ -196,7 +196,7 @@ export default function BankEmployeeSignup() {
                                         onChange={handleChange}
                                         required
                                         minLength={6}
-                                        className="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
+                                        className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
                                         placeholder="Create a password"
                                     />
                                 </div>
@@ -219,7 +219,7 @@ export default function BankEmployeeSignup() {
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
                                         required
-                                        className="focus:ring-green-500 focus:border-green-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
+                                        className="focus:ring-blue-500 focus:border-blue-500 flex-1 block w-full rounded-none rounded-r-md text-gray-900 border-gray-300 px-3 py-2 border"
                                         placeholder="Confirm your password"
                                     />
                                 </div>
@@ -230,7 +230,7 @@ export default function BankEmployeeSignup() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-green-300 disabled:cursor-not-allowed shadow-md"
+                                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300 disabled:cursor-not-allowed shadow-md"
                             >
                                 {loading ? (
                                     <span className="flex items-center">
@@ -245,7 +245,7 @@ export default function BankEmployeeSignup() {
 
                         <div className="text-center text-sm text-gray-950">
                             Already have an account?{' '}
-                            <Link href="/bank-login" className="font-medium text-green-600 hover:text-green-500">
+                            <Link href="/bank-login" className="font-medium text-blue-600 hover:text-blue-500">
                                 Login here
                             </Link>
                         </div>

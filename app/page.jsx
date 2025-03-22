@@ -19,7 +19,6 @@ import {
     Menu,
     X,
     ArrowRight,
-    Moon,
     CircleUser,
     CircleUserRound,
     Building2,
@@ -34,7 +33,6 @@ export default function Home() {
     const aboutRef = useRef(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
-    const [isDarkMode, setIsDarkMode] = useState(false);
 
     // Add a state to handle hydration
     const [isClient, setIsClient] = useState(false);
@@ -48,46 +46,10 @@ export default function Home() {
         }
     };
 
-    // Toggle dark mode
-    const toggleDarkMode = () => {
-        const newMode = !isDarkMode;
-        setIsDarkMode(newMode);
-
-        // Make sure we're explicitly adding or removing the class
-        if (newMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-
-        localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-    };
-
-    // Initialize dark mode and scroll handler
+    // Initialize scroll handler
     useEffect(() => {
         // Mark that we're now on the client
         setIsClient(true);
-
-        // Check for dark mode preference
-        const savedDarkMode = localStorage.getItem('darkMode');
-
-        // If we have a saved preference, use it
-        if (savedDarkMode !== null) {
-            const isDark = savedDarkMode === 'true';
-            setIsDarkMode(isDark);
-
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-        // If no saved preference, check system preference (optional)
-        else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            setIsDarkMode(true);
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('darkMode', 'true');
-        }
 
         // Scroll handler and other initialization code
         const handleScroll = () => {
@@ -130,77 +92,64 @@ export default function Home() {
     // If we're rendering on the server or during first client render, return a simplified version
     // This helps avoid hydration mismatch
     if (!isClient) {
-        return <div className="min-h-screen bg-white dark:bg-gray-900">
+        return <div className="min-h-screen bg-white">
             {/* Loading state or simplified initial UI */}
             <div className="flex items-center justify-center h-screen">
                 <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
                     <Leaf className="h-6 w-6 text-white" />
                 </div>
-                <span className="ml-3 text-2xl font-bold text-green-800 dark:text-green-400">Agrogami</span>
+                <span className="ml-3 text-2xl font-bold text-green-800">Agrogami</span>
             </div>
         </div>;
     }
 
     return (
-        <div className="min-h-screen overflow-hidden bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 dark:text-white transition-colors duration-300">
+        <div className="min-h-screen overflow-hidden bg-gradient-to-b from-blue-50 to-white">
             {/* Navigation - sticky */}
-            <nav className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm shadow-md border-b border-blue-100 dark:border-gray-700 transition-colors duration-300">
+            <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md border-b border-blue-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center" data-aos="fade-right">
                             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-green-500 to-blue-600 flex items-center justify-center">
                                 <Leaf className="h-6 w-6 text-white" />
                             </div>
-                            <span className="ml-3 text-2xl font-bold text-green-800 dark:text-green-400">Agrogami</span>
+                            <span className="ml-3 text-2xl font-bold text-green-800">Agrogami</span>
                         </div>
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-8" data-aos="fade-left">
                             <button
                                 onClick={() => scrollToSection(featuresRef, 'features')}
-                                className={`${activeSection === 'features' ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-600 dark:text-gray-300'} hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer`}
+                                className={`${activeSection === 'features' ? 'text-green-600 font-medium' : 'text-gray-600'} hover:text-green-600 transition-colors cursor-pointer`}
                                 suppressHydrationWarning
                             >
                                 Features
                             </button>
                             <button
                                 onClick={() => scrollToSection(howItWorksRef, 'howItWorks')}
-                                className={`${activeSection === 'howItWorks' ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-600 dark:text-gray-300'} hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer`}
+                                className={`${activeSection === 'howItWorks' ? 'text-green-600 font-medium' : 'text-gray-600'} hover:text-green-600 transition-colors cursor-pointer`}
                                 suppressHydrationWarning
                             >
                                 How It Works
                             </button>
                             <button
                                 onClick={() => scrollToSection(benefitsRef, 'benefits')}
-                                className={`${activeSection === 'benefits' ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-600 dark:text-gray-300'} hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer`}
+                                className={`${activeSection === 'benefits' ? 'text-green-600 font-medium' : 'text-gray-600'} hover:text-green-600 transition-colors cursor-pointer`}
                                 suppressHydrationWarning
                             >
                                 Benefits
                             </button>
                             <button
                                 onClick={() => scrollToSection(aboutRef, 'about')}
-                                className={`${activeSection === 'about' ? 'text-green-600 dark:text-green-400 font-medium' : 'text-gray-600 dark:text-gray-300'} hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer`}
+                                className={`${activeSection === 'about' ? 'text-green-600 font-medium' : 'text-gray-600'} hover:text-green-600 transition-colors cursor-pointer`}
                                 suppressHydrationWarning
                             >
                                 About Us
                             </button>
 
-                            {/* Theme toggle button */}
-                            <button
-                                onClick={toggleDarkMode}
-                                className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                                suppressHydrationWarning
-                            >
-                                {isDarkMode ? (
-                                    <Sun className="h-5 w-5" />
-                                ) : (
-                                    <Moon className="h-5 w-5" />
-                                )}
-                            </button>
-
                             <Link
                                 href="/farmer-login"
-                                className="px-5 py-2 bg-green-600 dark:bg-green-700 text-white font-medium rounded-full hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-md flex items-center"
+                                className="px-5 py-2 bg-green-600 text-white font-medium rounded-full hover:bg-green-700 transition-colors shadow-md flex items-center"
                             >
                                 <User className="mr-2 h-4 w-4" />
                                 Login
@@ -210,19 +159,7 @@ export default function Home() {
                         {/* Mobile menu button */}
                         <div className="md:hidden flex items-center space-x-4">
                             <button
-                                onClick={toggleDarkMode}
-                                className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                                suppressHydrationWarning
-                            >
-                                {isDarkMode ? (
-                                    <Sun className="h-5 w-5" />
-                                ) : (
-                                    <Moon className="h-5 w-5" />
-                                )}
-                            </button>
-
-                            <button
-                                className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 focus:outline-none"
+                                className="p-2 rounded-md text-gray-600 hover:text-green-600 focus:outline-none"
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                 suppressHydrationWarning
                             >
@@ -237,32 +174,32 @@ export default function Home() {
 
                     {/* Mobile Navigation Menu */}
                     {mobileMenuOpen && (
-                        <div className="md:hidden pt-4 pb-3 border-t border-blue-100 dark:border-gray-700 mt-2">
+                        <div className="md:hidden pt-4 pb-3 border-t border-blue-100 mt-2">
                             <div className="flex flex-col space-y-3">
                                 <button
                                     onClick={() => scrollToSection(featuresRef, 'features')}
-                                    className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer py-2"
+                                    className="text-gray-600 hover:text-green-600 transition-colors cursor-pointer py-2"
                                     suppressHydrationWarning
                                 >
                                     Features
                                 </button>
                                 <button
                                     onClick={() => scrollToSection(howItWorksRef, 'howItWorks')}
-                                    className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer py-2"
+                                    className="text-gray-600 hover:text-green-600 transition-colors cursor-pointer py-2"
                                     suppressHydrationWarning
                                 >
                                     How It Works
                                 </button>
                                 <button
                                     onClick={() => scrollToSection(benefitsRef, 'benefits')}
-                                    className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer py-2"
+                                    className="text-gray-600 hover:text-green-600 transition-colors cursor-pointer py-2"
                                     suppressHydrationWarning
                                 >
                                     Benefits
                                 </button>
                                 <button
                                     onClick={() => scrollToSection(aboutRef, 'about')}
-                                    className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors cursor-pointer py-2"
+                                    className="text-gray-600 hover:text-green-600 transition-colors cursor-pointer py-2"
                                     suppressHydrationWarning
                                 >
                                     About Us
@@ -270,13 +207,13 @@ export default function Home() {
                                 <div className="pt-2 flex space-x-3">
                                     <Link
                                         href="/farmer-login"
-                                        className="flex-1 px-4 py-2 bg-green-600 dark:bg-green-700 text-white font-medium rounded-full text-center hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-sm"
+                                        className="flex-1 px-4 py-2 bg-green-600 text-white font-medium rounded-full text-center hover:bg-green-700 transition-colors shadow-sm"
                                     >
                                         Farmer Login
                                     </Link>
                                     <Link
                                         href="/bank-login"
-                                        className="flex-1 px-4 py-2 bg-white dark:bg-gray-800 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded-full text-center hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
+                                        className="flex-1 px-4 py-2 bg-white border border-blue-600 text-blue-600 font-medium rounded-full text-center hover:bg-blue-50 transition-colors"
                                     >
                                         Bank Login
                                     </Link>
@@ -288,33 +225,33 @@ export default function Home() {
             </nav>
 
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 border-b border-blue-200 dark:border-gray-700 transition-colors duration-300">
-                <div className="absolute right-0 top-0 -mt-20 -mr-20 w-64 h-64 rounded-full bg-green-300 dark:bg-green-900 opacity-20"></div>
-                <div className="absolute left-0 bottom-0 -mb-20 -ml-20 w-80 h-80 rounded-full bg-blue-400 dark:bg-blue-900 opacity-10"></div>
+            <section className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 border-b border-blue-200">
+                <div className="absolute right-0 top-0 -mt-20 -mr-20 w-64 h-64 rounded-full bg-green-300 opacity-20"></div>
+                <div className="absolute left-0 bottom-0 -mb-20 -ml-20 w-80 h-80 rounded-full bg-blue-400 opacity-10"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 relative z-10">
                     <div className="flex flex-col md:flex-row items-center">
                         <div className="md:w-1/2 mb-12 md:mb-0" data-aos="fade-right" data-aos-delay="100">
-                            <div className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-300 rounded-full text-sm font-medium mb-6">
+                            <div className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-6">
                                 Reimagining Rural Finance
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-gray-900 dark:text-white">
-                                Smart Credit for <span className="text-green-600 dark:text-green-400 relative">Farmers <span className="absolute bottom-0 left-0 w-full h-1 bg-green-400 dark:bg-green-700 opacity-50"></span></span> Based on Agricultural Potential
+                            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-6 text-gray-900">
+                                Smart Credit for <span className="text-green-600 relative">Farmers <span className="absolute bottom-0 left-0 w-full h-1 bg-green-400 opacity-50"></span></span> Based on Agricultural Potential
                             </h1>
-                            <p className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                            <p className="text-xl text-gray-700 mb-8 leading-relaxed">
                                 Agrogami uses land, soil, weather and crop analytics to create fairer credit assessments for farmers, unlocking financial opportunities beyond traditional credit scores.
                             </p>
                             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4" data-aos="fade-up" data-aos-delay="200">
                                 <Link
                                     href="/farmer-login"
-                                    className="px-6 py-3 bg-green-600 dark:bg-green-700 text-white font-medium rounded-full hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-md flex items-center justify-center"
+                                    className="px-6 py-3 bg-green-600 text-white font-medium rounded-full hover:bg-green-700 transition-colors shadow-md flex items-center justify-center"
                                 >
                                     <CircleUserRound className="mr-2 h-5 w-5" />
                                     Login as Farmer
                                 </Link>
                                 <Link
                                     href="/bank-login"
-                                    className="px-6 py-3 bg-white dark:bg-gray-800 border border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded-full hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center"
+                                    className="px-6 py-3 bg-white border border-blue-600 text-blue-600 font-medium rounded-full hover:bg-blue-50 transition-colors flex items-center justify-center"
                                 >
                                     <Building2 className="mr-2 h-5 w-5" />
                                     Login as Bank Employee
@@ -324,13 +261,13 @@ export default function Home() {
                         <div className="md:w-1/2 flex justify-center" data-aos="fade-left" data-aos-delay="300">
                             <div className="relative w-full max-w-lg h-80 md:h-96">
                                 {/* Background decorative elements */}
-                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-300 dark:bg-blue-800 rounded-full opacity-10"></div>
-                                <div className="absolute top-10 right-10 w-16 h-16 bg-green-400 dark:bg-green-800 rounded-full opacity-20"></div>
-                                <div className="absolute bottom-10 left-10 w-24 h-24 bg-green-500 dark:bg-green-900 rounded-full opacity-10"></div>
+                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-300 rounded-full opacity-10"></div>
+                                <div className="absolute top-10 right-10 w-16 h-16 bg-green-400 rounded-full opacity-20"></div>
+                                <div className="absolute bottom-10 left-10 w-24 h-24 bg-green-500 rounded-full opacity-10"></div>
 
                                 {/* Credit Score Card */}
-                                <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl transform rotate-3 border border-blue-200 dark:border-gray-700"></div>
-                                <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-blue-500 dark:from-green-700 dark:to-blue-800 rounded-2xl shadow-xl">
+                                <div className="absolute inset-0 bg-white rounded-2xl shadow-2xl transform rotate-3 border border-blue-200"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-green-600 to-blue-500 rounded-2xl shadow-xl">
                                     <div className="p-8 h-full flex flex-col justify-between">
                                         <div>
                                             <div className="flex justify-between items-center mb-4">
@@ -396,71 +333,71 @@ export default function Home() {
             </section>
 
             {/* Features Section */}
-            <section ref={featuresRef} className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+            <section ref={featuresRef} className="py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16" data-aos="fade-up">
-                        <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium mb-3">
+                        <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-3">
                             Our Approach
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Redefining Agricultural Finance</h2>
-                        <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Redefining Agricultural Finance</h2>
+                        <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                             Agrogami integrates multiple data sources to create a comprehensive view of farming potential
                             beyond traditional credit metrics.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-blue-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="100">
-                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center mb-6">
-                                <Map className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                        <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="100">
+                            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                                <Map className="h-8 w-8 text-blue-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">GIS Data Integration</h3>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">GIS Data Integration</h3>
+                            <p className="text-gray-700">
                                 Analyzes land quality, location factors, and geographical advantages to assess actual farming potential.
                             </p>
-                            <div className="mt-4 flex items-center text-blue-600 dark:text-blue-400 font-medium">
+                            <div className="mt-4 flex items-center text-blue-600 font-medium">
                                 <span>Learn more</span>
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-blue-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="200">
-                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center mb-6">
-                                <Cloud className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                        <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="200">
+                            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                                <Cloud className="h-8 w-8 text-blue-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Weather Intelligence</h3>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Weather Intelligence</h3>
+                            <p className="text-gray-700">
                                 Incorporates historical patterns and forecasts to predict yield stability and climate resilience.
                             </p>
-                            <div className="mt-4 flex items-center text-blue-600 dark:text-blue-400 font-medium">
+                            <div className="mt-4 flex items-center text-blue-600 font-medium">
                                 <span>Learn more</span>
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-green-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="300">
-                            <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl flex items-center justify-center mb-6">
-                                <Droplet className="h-8 w-8 text-green-600 dark:text-green-400" />
+                        <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="300">
+                            <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
+                                <Droplet className="h-8 w-8 text-green-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Soil Health Metrics</h3>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Soil Health Metrics</h3>
+                            <p className="text-gray-700">
                                 Evaluates soil composition, nutrient levels, and sustainability practices for long-term productivity.
                             </p>
-                            <div className="mt-4 flex items-center text-green-600 dark:text-green-400 font-medium">
+                            <div className="mt-4 flex items-center text-green-600 font-medium">
                                 <span>Learn more</span>
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-green-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="400">
-                            <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl flex items-center justify-center mb-6">
-                                <BarChart2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+                        <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1" data-aos="zoom-in" data-aos-delay="400">
+                            <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
+                                <BarChart2 className="h-8 w-8 text-green-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Yield Potential Analysis</h3>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">Yield Potential Analysis</h3>
+                            <p className="text-gray-700">
                                 Assesses historical yields, farming techniques, and crop selection to project future performance.
                             </p>
-                            <div className="mt-4 flex items-center text-green-600 dark:text-green-400 font-medium">
+                            <div className="mt-4 flex items-center text-green-600 font-medium">
                                 <span>Learn more</span>
                                 <ArrowRight className="ml-2 h-4 w-4" />
                             </div>
@@ -470,39 +407,39 @@ export default function Home() {
             </section>
 
             {/* How It Works */}
-            <section ref={howItWorksRef} className="py-20 bg-blue-50 dark:bg-gray-800 relative transition-colors duration-300">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-200 dark:bg-blue-900 rounded-full opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-green-300 dark:bg-green-900 rounded-full opacity-20 transform -translate-x-1/3 translate-y-1/3"></div>
+            <section ref={howItWorksRef} className="py-20 bg-blue-50 relative">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-green-300 rounded-full opacity-20 transform -translate-x-1/3 translate-y-1/3"></div>
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-16" data-aos="fade-up">
-                        <div className="inline-block px-3 py-1 bg-blue-200 dark:bg-blue-800 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium mb-3">
+                        <div className="inline-block px-3 py-1 bg-blue-200 text-blue-800 rounded-full text-sm font-medium mb-3">
                             Process
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">How Agrogami Works</h2>
-                        <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">How Agrogami Works</h2>
+                        <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                             Our platform creates a bridge between farmers and financial institutions through agricultural intelligence.
                         </p>
                     </div>
 
                     <div className="relative">
                         {/* Connecting line */}
-                        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-2 h-full bg-gradient-to-b from-green-200 to-blue-200 dark:from-green-900 dark:to-blue-900 rounded-full hidden md:block" style={{ zIndex: 0 }}></div>
+                        <div className="absolute top-24 left-1/2 transform -translate-x-1/2 w-2 h-full bg-gradient-to-b from-green-200 to-blue-200 rounded-full hidden md:block" style={{ zIndex: 0 }}></div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 relative">
-                            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg md:transform md:translate-x-12 relative z-10" data-aos="fade-right" data-aos-delay="100">
-                                <div className="absolute top-8 right-0 transform translate-x-1/2 w-16 h-16 bg-green-600 dark:bg-green-700 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">1</div>
+                            <div className="bg-white p-8 rounded-2xl shadow-lg md:transform md:translate-x-12 relative z-10" data-aos="fade-right" data-aos-delay="100">
+                                <div className="absolute top-8 right-0 transform translate-x-1/2 w-16 h-16 bg-green-600 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">1</div>
                                 <div className="mb-6">
-                                    <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl flex items-center justify-center mb-4">
-                                        <CircleUserRound className="h-8 w-8 text-green-600 dark:text-green-400" />
+                                    <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
+                                        <CircleUserRound className="h-8 w-8 text-green-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Farmer Registration</h3>
-                                    <p className="text-gray-700 dark:text-gray-300">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Farmer Registration</h3>
+                                    <p className="text-gray-700">
                                         Farmers provide basic information about their farm location and primary crops. Our system then begins collecting environmental data.
                                     </p>
                                 </div>
-                                <div className="bg-green-50 dark:bg-green-900/30 p-4 rounded-xl">
-                                    <p className="text-green-800 dark:text-green-300 text-sm italic">
+                                <div className="bg-green-50 p-4 rounded-xl">
+                                    <p className="text-green-800 text-sm italic">
                                         "Minimal documentation required - we focus on your land's potential, not paperwork."
                                     </p>
                                 </div>
@@ -512,37 +449,37 @@ export default function Home() {
 
                             <div className="md:h-64"></div>
 
-                            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg md:transform md:-translate-x-12 relative z-10" data-aos="fade-left" data-aos-delay="200">
-                                <div className="absolute top-8 left-0 transform -translate-x-1/2 w-16 h-16 bg-blue-600 dark:bg-blue-700 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">2</div>
+                            <div className="bg-white p-8 rounded-2xl shadow-lg md:transform md:-translate-x-12 relative z-10" data-aos="fade-left" data-aos-delay="200">
+                                <div className="absolute top-8 left-0 transform -translate-x-1/2 w-16 h-16 bg-blue-600 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">2</div>
                                 <div className="mb-6">
-                                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center mb-4">
-                                        <Map className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
+                                        <Map className="h-8 w-8 text-blue-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Data Collection & Analysis</h3>
-                                    <p className="text-gray-700 dark:text-gray-300">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Data Collection & Analysis</h3>
+                                    <p className="text-gray-700">
                                         Our system automatically gathers GIS data, weather patterns, soil health metrics, and crop history to build a comprehensive profile.
                                     </p>
                                 </div>
-                                <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl">
-                                    <p className="text-blue-800 dark:text-blue-300 text-sm italic">
+                                <div className="bg-blue-50 p-4 rounded-xl">
+                                    <p className="text-blue-800 text-sm italic">
                                         "Advanced agricultural data science working behind the scenes."
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg md:transform md:translate-x-12 relative z-10" data-aos="fade-right" data-aos-delay="300">
-                                <div className="absolute top-8 right-0 transform translate-x-1/2 w-16 h-16 bg-green-600 dark:bg-green-700 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">3</div>
+                            <div className="bg-white p-8 rounded-2xl shadow-lg md:transform md:translate-x-12 relative z-10" data-aos="fade-right" data-aos-delay="300">
+                                <div className="absolute top-8 right-0 transform translate-x-1/2 w-16 h-16 bg-green-600 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">3</div>
                                 <div className="mb-6">
-                                    <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl flex items-center justify-center mb-4">
-                                        <BarChart2 className="h-8 w-8 text-green-600 dark:text-green-400" />
+                                    <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-4">
+                                        <BarChart2 className="h-8 w-8 text-green-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Credit Score Generation</h3>
-                                    <p className="text-gray-700 dark:text-gray-300">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Credit Score Generation</h3>
+                                    <p className="text-gray-700">
                                         Our AI analyzes traditional financial metrics alongside agricultural factors to create a holistic credit score that reflects true potential.
                                     </p>
                                 </div>
-                                <div className="bg-green-50 dark:bg-green-900/30 p-4 rounded-xl">
-                                    <p className="text-green-800 dark:text-green-300 text-sm italic">
+                                <div className="bg-green-50 p-4 rounded-xl">
+                                    <p className="text-green-800 text-sm italic">
                                         "Your farm's potential becomes visible to lenders through our scoring system."
                                     </p>
                                 </div>
@@ -552,19 +489,19 @@ export default function Home() {
 
                             <div className="md:h-64"></div>
 
-                            <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg md:transform md:-translate-x-12 relative z-10" data-aos="fade-left" data-aos-delay="400">
-                                <div className="absolute top-8 left-0 transform -translate-x-1/2 w-16 h-16 bg-blue-600 dark:bg-blue-700 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">4</div>
+                            <div className="bg-white p-8 rounded-2xl shadow-lg md:transform md:-translate-x-12 relative z-10" data-aos="fade-left" data-aos-delay="400">
+                                <div className="absolute top-8 left-0 transform -translate-x-1/2 w-16 h-16 bg-blue-600 text-white rounded-full font-bold text-xl flex items-center justify-center z-20">4</div>
                                 <div className="mb-6">
-                                    <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-2xl flex items-center justify-center mb-4">
-                                        <Building2 className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
+                                        <Building2 className="h-8 w-8 text-blue-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Tailored Financial Solutions</h3>
-                                    <p className="text-gray-700 dark:text-gray-300">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2">Tailored Financial Solutions</h3>
+                                    <p className="text-gray-700">
                                         Financial institutions receive detailed assessments enabling them to offer customized loan products that match with seasonal cash flows.
                                     </p>
                                 </div>
-                                <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-xl">
-                                    <p className="text-blue-800 dark:text-blue-300 text-sm italic">
+                                <div className="bg-blue-50 p-4 rounded-xl">
+                                    <p className="text-blue-800 text-sm italic">
                                         "Loans designed for farmers, respecting the natural cycles of agriculture."
                                     </p>
                                 </div>
@@ -575,67 +512,67 @@ export default function Home() {
             </section>
 
             {/* Benefits Section */}
-            <section ref={benefitsRef} className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+            <section ref={benefitsRef} className="py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16" data-aos="fade-up">
-                        <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium mb-3">
+                        <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-3">
                             Advantages
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">Benefits for All Stakeholders</h2>
-                        <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Benefits for All Stakeholders</h2>
+                        <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                             Agrogami creates value across the agricultural financing ecosystem.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                        <div className="bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-green-100 dark:border-gray-700 shadow-lg relative overflow-hidden" data-aos="fade-right" data-aos-delay="200">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-green-200 dark:bg-green-900 rounded-full opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
+                        <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100 shadow-lg relative overflow-hidden" data-aos="fade-right" data-aos-delay="200">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-green-200 rounded-full opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
 
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-xl flex items-center justify-center mr-4">
-                                    <CircleUserRound className="h-6 w-6 text-green-600 dark:text-green-400" />
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mr-4">
+                                    <CircleUserRound className="h-6 w-6 text-green-600" />
                                 </div>
                                 For Farmers
                             </h3>
 
                             <ul className="space-y-5 relative z-10">
                                 <li className="flex" data-aos="fade-up" data-aos-delay="250">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-green-600 dark:text-green-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Fair Credit Assessment</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Access to credit based on your farm's actual potential rather than just financial history</p>
+                                        <span className="text-gray-800 font-medium">Fair Credit Assessment</span>
+                                        <p className="text-gray-600 mt-1">Access to credit based on your farm's actual potential rather than just financial history</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="300">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-green-600 dark:text-green-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Seasonal-Friendly Repayment</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Loan structures that align with your harvest cycles and seasonal cash flow patterns</p>
+                                        <span className="text-gray-800 font-medium">Seasonal-Friendly Repayment</span>
+                                        <p className="text-gray-600 mt-1">Loan structures that align with your harvest cycles and seasonal cash flow patterns</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="350">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-green-600 dark:text-green-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Minimal Documentation</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Simplified application process that focuses on your farm rather than extensive paperwork</p>
+                                        <span className="text-gray-800 font-medium">Minimal Documentation</span>
+                                        <p className="text-gray-600 mt-1">Simplified application process that focuses on your farm rather than extensive paperwork</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="400">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-green-600 dark:text-green-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-green-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Agricultural Insights</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Gain valuable data about your land quality, soil health, and potential improvements</p>
+                                        <span className="text-gray-800 font-medium">Agricultural Insights</span>
+                                        <p className="text-gray-600 mt-1">Gain valuable data about your land quality, soil health, and potential improvements</p>
                                     </div>
                                 </li>
                             </ul>
@@ -643,61 +580,61 @@ export default function Home() {
                             <div className="mt-8 text-center">
                                 <Link
                                     href="/farmer-signup"
-                                    className="inline-block px-6 py-3 bg-green-600 dark:bg-green-700 text-white font-medium rounded-full hover:bg-green-700 dark:hover:bg-green-600 transition-colors shadow-md"
+                                    className="inline-block px-6 py-3 bg-green-600 text-white font-medium rounded-full hover:bg-green-700 transition-colors shadow-md"
                                 >
                                     Sign Up as a Farmer
                                 </Link>
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-blue-100 dark:border-gray-700 shadow-lg relative overflow-hidden" data-aos="fade-left" data-aos-delay="200">
-                            <div className="absolute top-0 left-0 w-32 h-32 bg-blue-200 dark:bg-blue-900 rounded-full opacity-20 transform -translate-x-1/3 -translate-y-1/3"></div>
+                        <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 shadow-lg relative overflow-hidden" data-aos="fade-left" data-aos-delay="200">
+                            <div className="absolute top-0 left-0 w-32 h-32 bg-blue-200 rounded-full opacity-20 transform -translate-x-1/3 -translate-y-1/3"></div>
 
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-xl flex items-center justify-center mr-4">
-                                    <Building2 className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mr-4">
+                                    <Building2 className="h-6 w-6 text-blue-600" />
                                 </div>
                                 For Financial Institutions
                             </h3>
 
                             <ul className="space-y-5 relative z-10">
                                 <li className="flex" data-aos="fade-up" data-aos-delay="250">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Superior Risk Assessment</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Make lending decisions based on comprehensive agricultural data and true repayment potential</p>
+                                        <span className="text-gray-800 font-medium">Superior Risk Assessment</span>
+                                        <p className="text-gray-600 mt-1">Make lending decisions based on comprehensive agricultural data and true repayment potential</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="300">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Reduced Default Rates</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Improve portfolio performance with loans matched to actual farming potential and cash flows</p>
+                                        <span className="text-gray-800 font-medium">Reduced Default Rates</span>
+                                        <p className="text-gray-600 mt-1">Improve portfolio performance with loans matched to actual farming potential and cash flows</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="350">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">Rural Market Expansion</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Confidently serve underbanked rural populations with data-backed lending decisions</p>
+                                        <span className="text-gray-800 font-medium">Rural Market Expansion</span>
+                                        <p className="text-gray-600 mt-1">Confidently serve underbanked rural populations with data-backed lending decisions</p>
                                     </div>
                                 </li>
 
                                 <li className="flex" data-aos="fade-up" data-aos-delay="400">
-                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mr-3">
-                                        <ChevronRight className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex-shrink-0 w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                        <ChevronRight className="h-4 w-4 text-blue-600" />
                                     </div>
                                     <div>
-                                        <span className="text-gray-800 dark:text-gray-200 font-medium">ESG Compliance</span>
-                                        <p className="text-gray-600 dark:text-gray-400 mt-1">Support sustainable agriculture while meeting regulatory requirements for inclusive lending</p>
+                                        <span className="text-gray-800 font-medium">ESG Compliance</span>
+                                        <p className="text-gray-600 mt-1">Support sustainable agriculture while meeting regulatory requirements for inclusive lending</p>
                                     </div>
                                 </li>
                             </ul>
@@ -705,7 +642,7 @@ export default function Home() {
                             <div className="mt-8 text-center">
                                 <Link
                                     href="/bank-signup"
-                                    className="inline-block px-6 py-3 bg-blue-600 dark:bg-blue-700 text-white font-medium rounded-full hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors shadow-md"
+                                    className="inline-block px-6 py-3 bg-blue-600 text-white font-medium rounded-full hover:bg-blue-700 transition-colors shadow-md"
                                 >
                                     Partner with Us
                                 </Link>
@@ -716,41 +653,42 @@ export default function Home() {
             </section>
 
             {/* Trust Indicators */}
-            <section className="py-16 bg-blue-50 dark:bg-gray-800 transition-colors duration-300">
+            <section className="py-16 bg-blue-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="100">
-                            <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Users className="h-8 w-8 text-green-600 dark:text-green-400" />
+                        <div className="bg-white p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="100">
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <Users className="h-8 w-8 text-green-600" />
                             </div>
-                            <h3 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">10,000+</h3>
-                            <p className="text-gray-800 dark:text-gray-200 font-medium">Farmers Empowered</p>
-                            <p className="text-gray-600 dark:text-gray-400 mt-2">Across 150 villages in 8 states</p>
+                            <h3 className="text-3xl font-bold text-green-600 mb-2">10,000+</h3>
+                            <p className="text-gray-800 font-medium">Farmers Empowered</p>
+                            <p className="text-gray-600 mt-2">Across 150 villages in 8 states</p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="200">
-                            <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <ShieldCheck className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                        <div className="bg-white p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="200">
+                            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <ShieldCheck className="h-8 w-8 text-blue-600" />
                             </div>
-                            <h3 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">100%</h3>
-                            <p className="text-gray-800 dark:text-gray-200 font-medium">Regulatory Compliant</p>
-                            <p className="text-gray-600 dark:text-gray-400 mt-2">Adhering to RBI and NABARD guidelines</p>
+                            <h3 className="text-3xl font-bold text-blue-600 mb-2">100%</h3>
+                            <p className="text-gray-800 font-medium">Regulatory Compliant</p>
+                            <p className="text-gray-600 mt-2">Adhering to RBI and NABARD guidelines</p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="300">
-                            <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <TrendingUp className="h-8 w-8 text-green-600 dark:text-green-400" />
+                        <div className="bg-white p-8 rounded-2xl shadow-sm text-center" data-aos="fade-up" data-aos-delay="300">
+                            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <TrendingUp className="h-8 w-8 text-green-600" />
                             </div>
-                            <h3 className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">30%</h3>
-                            <p className="text-gray-800 dark:text-gray-200 font-medium">Increased Credit Access</p>
-                            <p className="text-gray-600 dark:text-gray-400 mt-2">Average improvement in loan eligibility</p>
+                            <h3 className="text-3xl font-bold text-green-600 mb-2">30%</h3>
+                            <p className="text-gray-800 font-medium">Increased Credit Access</p>
+                            <p className="text-gray-600 mt-2">Average improvement in loan eligibility</p>
                         </div>
                     </div>
                 </div>
             </section>
+
             {/* CTA Section */}
-            <section className="relative py-20 overflow-hidden transition-colors duration-300">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-700 dark:from-green-900 dark:to-blue-900"></div>
+            <section className="relative py-20 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-blue-700"></div>
                 <div className="absolute top-0 right-0 w-80 h-80 bg-white rounded-full opacity-10 transform translate-x-1/3 -translate-y-1/3"></div>
                 <div className="absolute bottom-0 left-0 w-80 h-80 bg-white rounded-full opacity-10 transform -translate-x-1/3 translate-y-1/3"></div>
 
@@ -764,13 +702,13 @@ export default function Home() {
                             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6" data-aos="fade-up" data-aos-delay="200">
                                 <Link
                                     href="/farmer-signup"
-                                    className="px-8 py-4 bg-white text-green-600 dark:text-green-700 font-medium rounded-full hover:bg-green-50 transition-colors shadow-md"
+                                    className="px-8 py-4 bg-white text-green-600 font-medium rounded-full hover:bg-green-50 transition-colors shadow-md"
                                 >
                                     Join as a Farmer
                                 </Link>
                                 <Link
                                     href="/bank-signup"
-                                    className="px-8 py-4 bg-blue-800 dark:bg-blue-900 text-white font-medium rounded-full hover:bg-blue-900 dark:hover:bg-blue-800 transition-colors shadow-md border border-white/20"
+                                    className="px-8 py-4 bg-blue-800 text-white font-medium rounded-full hover:bg-blue-900 transition-colors shadow-md border border-white/20"
                                 >
                                     Partner as a Bank
                                 </Link>
@@ -782,114 +720,104 @@ export default function Home() {
             </section>
 
             {/* About Section */}
-            <section ref={aboutRef} className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+            <section ref={aboutRef} className="py-20 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16" data-aos="fade-up">
-                        <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded-full text-sm font-medium mb-3">
+                        <div className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium mb-3">
                             Our Story
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">About Us</h2>
-                        <p className="text-xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">About Us</h2>
+                        <p className="text-xl text-gray-700 max-w-3xl mx-auto">
                             We're on a mission to revolutionize agricultural financing by bridging technology and farming traditions.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-                        <div className="bg-gradient-to-br from-blue-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-blue-100 dark:border-gray-700 shadow-sm" data-aos="fade-right" data-aos-delay="200">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h3>
-                            <p className="text-gray-700 dark:text-gray-300 mb-4">
+                        <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100 shadow-sm" data-aos="fade-right" data-aos-delay="200">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+                            <p className="text-gray-700 mb-4">
                                 Agrogami was founded by a team of innovators who recognized the gap between traditional credit assessment methods and the unique realities of farming.
                             </p>
-                            <p className="text-gray-700 dark:text-gray-300 mb-4">
+                            <p className="text-gray-700 mb-4">
                                 Our platform combines cutting-edge technology with deep agricultural knowledge to create a more inclusive financial ecosystem that recognizes the true value and potential of farmers' work.
                             </p>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-gray-700">
                                 By bridging the information gap between farmers and financial institutions, we're working to ensure that every farmer has access to the capital they need to thrive, regardless of their formal credit history.
                             </p>
                         </div>
 
-                        <div className="bg-gradient-to-br from-green-50 to-white dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl border border-green-100 dark:border-gray-700 shadow-sm" data-aos="fade-left" data-aos-delay="200">
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Vision</h3>
-                            <p className="text-gray-700 dark:text-gray-300 mb-4">
+                        <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border border-green-100 shadow-sm" data-aos="fade-left" data-aos-delay="200">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
+                            <p className="text-gray-700 mb-4">
                                 We envision a future where every farmer has fair access to financial resources based on their true potential rather than just documentation and historical records.
                             </p>
-                            <p className="text-gray-700 dark:text-gray-300 mb-4">
+                            <p className="text-gray-700 mb-4">
                                 We believe that by properly valuing agricultural assets, skills, and environmental factors, we can unlock rural prosperity and support sustainable farming practices across India.
                             </p>
-                            <p className="text-gray-700 dark:text-gray-300">
+                            <p className="text-gray-700">
                                 Agrogami aims to be the bridge between traditional banking and modern agricultural science, creating opportunities for millions of farmers to access appropriate financial services.
                             </p>
                         </div>
                     </div>
 
                     {/* Hackathon Information */}
-                    <div className="bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-800 dark:to-gray-900 p-8 rounded-2xl shadow-sm mb-16 relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-200 dark:bg-blue-900 rounded-full opacity-30 transform translate-x-1/3 -translate-y-1/3"></div>
+                    <div className="bg-gradient-to-br from-blue-50 to-green-50 p-8 rounded-2xl shadow-sm mb-16 relative overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-200 rounded-full opacity-30 transform translate-x-1/3 -translate-y-1/3"></div>
 
                         <div className="flex flex-col md:flex-row items-center justify-between mb-6 relative z-10">
                             <div>
                                 <div className="flex items-center">
-                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Ingenium 6.0</h3>
-                                    <span className="ml-4 px-4 py-1 bg-blue-600 dark:bg-blue-700 text-white rounded-full text-sm font-medium">Hackathon Project</span>
+                                    <h3 className="text-2xl font-bold text-gray-900">Ingenium 6.0</h3>
+                                    <span className="ml-4 px-4 py-1 bg-blue-600 text-white rounded-full text-sm font-medium">Hackathon Project</span>
                                 </div>
-                                <p className="text-gray-700 dark:text-gray-300 mt-1">A hackathon organised by Ahmedabad University</p>
+                                <p className="text-gray-700 mt-1">A hackathon organised by Ahmedabad University</p>
                             </div>
                         </div>
-                        <p className="text-gray-700 dark:text-gray-300 mb-4 relative z-10">
+                        <p className="text-gray-700 mb-4 relative z-10">
                             Agrogami was developed as a solution for the Alternative Credit Evaluation Tool challenge, addressing the unique needs of farmers who are often underserved by traditional credit scoring systems.
                         </p>
-                        <p className="text-gray-700 dark:text-gray-300 relative z-10">
+                        <p className="text-gray-700 relative z-10">
                             Our team combined expertise in agricultural science, data analytics, and financial technology to create a platform that can transform how rural credit is assessed and distributed.
                         </p>
                     </div>
 
                     {/* Team Members */}
-                    <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl border border-blue-100 dark:border-gray-700 shadow-sm" data-aos="fade-up" data-aos-delay="400">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Our Team</h3>
+                    <div className="bg-white p-8 rounded-2xl border border-blue-100 shadow-sm" data-aos="fade-up" data-aos-delay="400">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Our Team</h3>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                             <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
-                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 dark:from-green-600 dark:to-blue-800 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
+                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
                                     <span className="text-2xl font-bold">{`CP`}</span>
                                 </div>
-                                <h4 className="font-bold text-gray-900 dark:text-white">Chinmay Patel</h4>
-                                <p className="text-green-600 dark:text-green-400 font-medium">Team Lead</p>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Agricultural Data Science</p>
+                                <h4 className="font-bold text-gray-900">Chinmay Patel</h4>  
                             </div>
 
                             <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
-                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 dark:from-green-600 dark:to-blue-800 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
+                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
                                     <span className="text-2xl font-bold">{`MG`}</span>
                                 </div>
-                                <h4 className="font-bold text-gray-900 dark:text-white">Maitry Gajjar</h4>
-                                <p className="text-blue-600 dark:text-blue-400 font-medium">Financial Technology</p>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Backend Developer</p>
+                                <h4 className="font-bold text-gray-900">Maitry Gajjar</h4>
                             </div>
 
                             <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
-                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 dark:from-green-600 dark:to-blue-800 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
+                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
                                     <span className="text-2xl font-bold">{`PJ`}</span>
                                 </div>
-                                <h4 className="font-bold text-gray-900 dark:text-white">Prem Joshi</h4>
-                                <p className="text-green-600 dark:text-green-400 font-medium">Machine Learning</p>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Data Scientist</p>
+                                <h4 className="font-bold text-gray-900">Prem Joshi</h4>
                             </div>
 
                             <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="400">
-                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 dark:from-green-600 dark:to-blue-800 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
+                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
                                     <span className="text-2xl font-bold">{`DM`}</span>
                                 </div>
-                                <h4 className="font-bold text-gray-900 dark:text-white">Dev Mehta</h4>
-                                <p className="text-blue-600 dark:text-blue-400 font-medium">GIS & Spatial Analysis</p>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Data Engineer</p>
+                                <h4 className="font-bold text-gray-900">Dev Mehta</h4>
                             </div>
 
                             <div className="flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="500">
-                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 dark:from-green-600 dark:to-blue-800 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
+                                <div className="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-600 rounded-xl flex items-center justify-center text-white mb-4 shadow-md">
                                     <span className="text-2xl font-bold">{`NS`}</span>
                                 </div>
-                                <h4 className="font-bold text-gray-900 dark:text-white">Niket Shah</h4>
-                                <p className="text-green-600 dark:text-green-400 font-medium">UI/UX Design</p>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">Frontend Developer</p>
+                                <h4 className="font-bold text-gray-900">Niket Shah</h4>
                             </div>
                         </div>
                     </div>
@@ -897,7 +825,7 @@ export default function Home() {
             </section >
 
             {/* Footer */}
-            <footer className="bg-gray-900 dark:bg-gray-950 text-white py-16 transition-colors duration-300" >
+            <footer className="bg-gray-900 text-white py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                         <div data-aos="fade-right">
@@ -1022,11 +950,11 @@ export default function Home() {
                                     <input
                                         type="email"
                                         placeholder="Your email"
-                                        className="px-4 py-2 bg-gray-800 dark:bg-gray-950 text-gray-300 rounded-l-full w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+                                        className="px-4 py-2 bg-gray-800 text-gray-300 rounded-l-full w-full focus:outline-none focus:ring-2 focus:ring-green-500"
                                         suppressHydrationWarning
                                     />
                                     <button
-                                        className="px-4 py-2 bg-green-600 dark:bg-green-700 text-white rounded-r-full hover:bg-green-700 dark:hover:bg-green-600 transition-colors"
+                                        className="px-4 py-2 bg-green-600 text-white rounded-r-full hover:bg-green-700 transition-colors"
                                         suppressHydrationWarning
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -4,8 +4,22 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Leaf, MapPin, CreditCard, User, Loader2 } from 'lucide-react';
-import { getFirestore, collection, addDoc, doc, getDoc, setDoc } from 'firebase/firestore';
-import { signInAnonymously } from 'firebase/auth';
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    doc,
+    getDoc,
+    setDoc,
+    query,
+    where,
+    getDocs
+} from 'firebase/firestore';
+import {
+    signInAnonymously,
+    signInWithCustomToken,
+    signOut
+} from 'firebase/auth';
 import { auth, db } from '@/firebase';
 
 export default function FarmerLogin() {
@@ -20,6 +34,33 @@ export default function FarmerLogin() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [locationFetching, setLocationFetching] = useState(false);
+
+    // Check for existing login on mount
+    useEffect(() => {
+        const checkExistingLogin = async () => {
+            const farmerId = localStorage.getItem('farmerId');
+            if (farmerId) {
+                // If they have a farmerId in localStorage, check if it's valid
+                try {
+                    const farmerDoc = doc(db, "farmers", farmerId);
+                    const farmerSnapshot = await getDoc(farmerDoc);
+
+                    if (farmerSnapshot.exists()) {
+                        // Valid farmer ID, redirect to dashboard
+                        router.push('/farmer-dashboard');
+                    } else {
+                        // Invalid farmer ID, clear localStorage
+                        localStorage.removeItem('farmerId');
+                    }
+                } catch (error) {
+                    console.error("Error checking existing login:", error);
+                    localStorage.removeItem('farmerId');
+                }
+            }
+        };
+
+        checkExistingLogin();
+    }, [router]);
 
     // Get current location
     const getCurrentLocation = () => {
@@ -57,16 +98,26 @@ export default function FarmerLogin() {
                 throw new Error("Please fill in all required fields");
             }
 
-            // Sign in anonymously
-            const userCredential = await signInAnonymously(auth);
-            const userId = userCredential.user.uid;
-
             // Check if farmer with this uniqueId already exists
             const farmerDoc = doc(db, "farmers", formData.uniqueId);
             const farmerSnapshot = await getDoc(farmerDoc);
 
+            let userId;
+
+            // First sign out any existing anonymous user to avoid orphaned accounts
+            if (auth.currentUser) {
+                await signOut(auth);
+            }
+
+            // Sign in anonymously to get a new Firebase auth user
+            const userCredential = await signInAnonymously(auth);
+            userId = userCredential.user.uid;
+
             if (farmerSnapshot.exists()) {
-                // Update existing farmer data
+                // If farmer exists, update their data
+                const existingData = farmerSnapshot.data();
+
+                // Update the existing farmer document
                 await setDoc(farmerDoc, {
                     name: formData.name,
                     location: {
@@ -74,9 +125,11 @@ export default function FarmerLogin() {
                         longitude: parseFloat(formData.longitude)
                     },
                     hasKCC: formData.hasKCC,
-                    userId: userId,
+                    userId: userId, // Update with new anonymous user ID
                     lastLogin: new Date()
                 }, { merge: true });
+
+                console.log("Updated existing farmer with ID:", formData.uniqueId);
             } else {
                 // Create new farmer document with uniqueId as the document ID
                 await setDoc(farmerDoc, {
@@ -90,6 +143,8 @@ export default function FarmerLogin() {
                     createdAt: new Date(),
                     lastLogin: new Date()
                 });
+
+                console.log("Created new farmer with ID:", formData.uniqueId);
             }
 
             // Store the farmer ID in localStorage for future use

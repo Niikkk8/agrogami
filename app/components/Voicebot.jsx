@@ -15,8 +15,8 @@ const VoiceBot = () => {
   const recognitionRef = useRef(null);
 
   // Initialize Google Generative AI
-  const genAI = new GoogleGenerativeAI("AIzaSyBLL8MMqLP7xH_ub47hFyUExUSc8rOCk80");
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const genAI = new GoogleGenerativeAI("AIzaSyDv5AsvRiDXJaY8MD1JdQAvU5pjjFK4Zzs");
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const suggestions = [
     "Tell me a short story",
